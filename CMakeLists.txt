@@ -56,8 +56,13 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     )
 endif()
 
-# TODO refactor to use an option when adding shared lib support
-set(BUILD_SHARED_LIBS OFF)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared libraries")
+
+if(UNIX AND BUILD_SHARED_LIBS)
+  if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
+    add_definitions(-fPIC)
+  endif(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
+endif()
 
 # Version of mruby, useful for versoning .so and .dll files.
 # TODO automate by parsing src/version.h -or- extract git info?

@@ -44,7 +44,6 @@ else()
     )
 endif()
 
-
 # generate final static libmruby archive library
 add_library(libmruby_static STATIC
   mrblib.c
@@ -56,5 +55,19 @@ install(TARGETS libmruby_static
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   )
+
+# for shared library of libmruby
+if(BUILD_SHARED_LIBS)
+  add_library(libmruby
+    mrblib.c
+    $<TARGET_OBJECTS:mruby_object>
+    )
+  set_target_properties(libmruby PROPERTIES OUTPUT_NAME mruby)
+
+  install(TARGETS libmruby
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+  )
+endif()
 
 # vim: ts=2 sts=2 sw=2 et
